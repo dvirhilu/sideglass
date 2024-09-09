@@ -4,13 +4,15 @@
 * https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-11057-32-bit-Cortex-M3-Microcontroller-SAM3X-SAM3A_Datasheet.pdf
 */
 
+// TODO - if we want this file to be more generic, rename it to regs.h
+
 // offsets for different PIO controllers
-#define PIO_A_BASE_ADDR 0x400E0E00
-#define PIO_B_BASE_ADDR 0x400E1000
-#define PIO_C_BASE_ADDR 0x400E1200
-#define PIO_D_BASE_ADDR 0x400E1400
-#define PIO_E_BASE_ADDR 0x400E1600
-#define PIO_F_BASE_ADDR 0x400E1800
+#define PIOA_BASE_ADDR 0x400E0E00
+#define PIOB_BASE_ADDR 0x400E1000
+#define PIOC_BASE_ADDR 0x400E1200
+#define PIOD_BASE_ADDR 0x400E1400
+#define PIOE_BASE_ADDR 0x400E1600
+#define PIOF_BASE_ADDR 0x400E1800
 
 // offset for different PIO Registers
 #define PIO_PER_OFFSET    0x0000 // PIO enable register
@@ -56,3 +58,6 @@
 #define PIO_LOCKSR_OFFSET 0x00e0 // lock status register
 #define PIO_WPMR_OFFSET   0x00e4 // write protect mode register
 #define PIO_WPSR_OFFSET   0x00e8 // write protect mode status register
+
+// Macro to calculate register addresses
+#define REG_ADDR(device, reg_name) (device##_BASE_ADDR + reg_name##_OFFSET)
