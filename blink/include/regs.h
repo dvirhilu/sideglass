@@ -1,10 +1,77 @@
 /*
-* Register mappings for the Parallel Input/Output Controller (PIO) of the Atmel SAM3X MCU
-* For more information on the PIO, please refer to section 31 of the Atmel SAM3x datasheet
+* Register mappings for the Atmel SAM3X MCU
+* For more information, refer to the Atmel SAM3x datasheet
 * https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-11057-32-bit-Cortex-M3-Microcontroller-SAM3X-SAM3A_Datasheet.pdf
 */
 
 // TODO - if we want this file to be more generic, rename it to regs.h
+
+#ifndef REGS_H
+#define REGS_H
+
+/*
+* ----------------------------------------------------------------------------------------------
+* Peripheral Identifiers
+* For more information, refer to secion 9 of the datasheet
+* ----------------------------------------------------------------------------------------------
+*/
+
+#define PID_SUPC        0
+#define PID_RSTC        1
+#define PID_RTC         2
+#define PID_RTT         3
+#define PID_WDG         4
+#define PID_PMC         5
+#define PID_EEFC0       6
+#define PID_EEFC1       7
+#define PID_UART        8
+#define PID_SMC_SDRAMC  9
+#define PID_SDRAMC      10
+#define PID_PIOA        11
+#define PID_PIOB        12
+#define PID_PIOC        13
+#define PID_PIOD        14
+#define PID_PIOE        15
+#define PID_PIOF        16
+#define PID_USART0      17
+#define PID_USART1      18
+#define PID_USART2      19
+#define PID_USART3      20
+#define PID_HSMCI       21
+#define PID_TWI0        22
+#define PID_TWI1        23
+#define PID_SPI0        24
+#define PID_SPI1        25
+#define PID_SSC         26
+#define PID_TC0         27
+#define PID_TC1         28
+#define PID_TC2         29
+#define PID_TC3         30
+#define PID_TC4         31
+#define PID_TC5         32
+#define PID_TC6         33
+#define PID_TC7         34
+#define PID_TC8         35
+#define PID_PWM         36
+#define PID_ADC         37
+#define PID_DACC        38
+#define PID_DMAC        39
+#define PID_UOTGHS      40
+#define PID_TRNG        41
+#define PID_EMAC        42
+#define PID_CAN0        43
+#define PID_CAN1        44
+
+// Macro to calculate register addresses
+#define REG_ADDR(device, reg_name) (device##_BASE_ADDR + reg_name##_OFFSET)
+
+/*
+* ----------------------------------------------------------------------------------------------
+* Parallel Input/Output Controller (PIO)
+* 
+* For more information on the PIO, refer to section 31 of the datasheet
+* ----------------------------------------------------------------------------------------------
+*/
 
 // offsets for different PIO controllers
 #define PIOA_BASE_ADDR 0x400E0E00
@@ -59,5 +126,16 @@
 #define PIO_WPMR_OFFSET   0x00e4 // write protect mode register
 #define PIO_WPSR_OFFSET   0x00e8 // write protect mode status register
 
-// Macro to calculate register addresses
-#define REG_ADDR(device, reg_name) (device##_BASE_ADDR + reg_name##_OFFSET)
+/*
+* ----------------------------------------------------------------------------------------------
+*  Power Management Controller (PMC)
+* 
+* For more information on the PIO, refer to section 28 of the datasheet
+* ----------------------------------------------------------------------------------------------
+*/
+
+#define PMC_BASE_ADDR     0x400e0600
+
+#define PMC_PCER0_OFFSET  0x0010  //Peripheral Clock Enable Register 0
+
+#endif
