@@ -21,8 +21,10 @@ OBJS := $(subst $(SRC_DIR),$(OUT_DIR),$(SRCES))
 # replace .c to .o
 OBJS := $(patsubst %.c,%.o,$(OBJS))
 
-# Create .o files from all .c files in src
+# Create the output folder and
+# create .o files from all .c files in src
 $(OBJS): $(SRCES) $(INCS)
+	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 print: 
