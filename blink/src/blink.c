@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include <pio_regs.h>
+#include <regs.h>
 
 #define LED_SHIFT 27
 #define BLINK_DELAY 100000
