@@ -27,5 +27,6 @@ $(OBJS): $(SRCES) $(INCS)
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-print: 
-	echo $(SRCES) $(OBJS)
+# Remove everything in the output folder
+clean:
+	rm -r $(OUT_DIR)/*
