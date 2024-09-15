@@ -21,9 +21,13 @@ OBJS := $(subst $(SRC_DIR),$(OUT_DIR),$(SRCS))
 # replace .c to .o
 OBJS := $(patsubst %.c,%.o,$(OBJS))
 
+# "all" target to compile all object files
+all: $(OBJS)
+
 # Create the output folder and
 # create .o files from all .c files in src
 $(OBJS): $(SRCS) $(INCS)
+	@echo "$(SRCS) $(OBJS)"
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
