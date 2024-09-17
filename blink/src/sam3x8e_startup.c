@@ -67,9 +67,12 @@
 */
 
 void ResetHandler(void);
-// These will get replaced by the DefaultHandler alias
-// 'weak' attribute allows programmer to override these function implementations 
-// later in the main source files
+/*
+* These handlers will be replaced by the "DefaultHandler" alias to allow
+* the programmer to implement only the required handlers later on in the
+* source files. The attribute 'weak' allows programmer to override this alias
+* and can re-define the function when required.
+*/
 void HardFaultHandler(void)     __attribute__((weak, alias("DefaultHandler")));
 void MemMgmtFaultHandler(void)  __attribute__((weak, alias("DefaultHandler")));
 void BusFaultHandler(void)      __attribute__((weak, alias("DefaultHandler")));
