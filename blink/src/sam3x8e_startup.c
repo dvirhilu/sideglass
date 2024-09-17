@@ -67,6 +67,16 @@
 */
 
 void ResetHandler(void);
+// These will get replaced by the DefaultHandler alias
+// 'weak' attribute allows programmer to override these function implementations 
+// later in the main source files
+void HardFaultHandler(void)     __attribute__((weak, alias("DefaultHandler")));
+void MemMgmtFaultHandler(void)  __attribute__((weak, alias("DefaultHandler")));
+void BusFaultHandler(void)      __attribute__((weak, alias("DefaultHandler")));
+void UsgFaultHandler(void)      __attribute__((weak, alias("DefaultHandler")));
+void SVCallHandler(void)        __attribute__((weak, alias("DefaultHandler")));
+void PendSVHandler(void)        __attribute__((weak, alias("DefaultHandler")));
+void SystickHandler(void)       __attribute__((weak, alias("DefaultHandler")));
 
 /*
 * ----------------------------------------------------------------------------------------------
@@ -76,9 +86,35 @@ void ResetHandler(void);
 __attribute__((section(".vector_table")))
 uint32_t vectors[] = {
     INIT_STACK_PTR,
-    (uint32_t)&ResetHandler
+    (uint32_t)&ResetHandler,
+    0,                              // Reserved
+    (uint32_t)&HardFaultHandler,
+    (uint32_t)&MemMgmtFaultHandler,
+    (uint32_t)&BusFaultHandler,
+    (uint32_t)&UsgFaultHandler,
+    0,                              // Reserved
+    0,                              // Reserved
+    0,                              // Reserved
+    0,                              // Reserved
+    (uint32_t)&SVCallHandler,
+    0,                              // Reserved for Debug
+    0,                              // Reserved
+    (uint32_t)&PendSVHandler,
+    (uint32_t)&SystickHandler
 };
 
-void ResetHandler(void) {
+// Dummy function
+void DefaultHandler(void) {
+    while(1);
+}
 
+// First handler that gets called upon device reset
+void ResetHandler() {
+    // copy .data section to SRAM
+
+    //initializae the .bss section to zero in SRAM
+
+    // call init function of std library
+
+    /// call main()
 }
