@@ -1,6 +1,7 @@
 # Makefile for compiling
 
-CC := arm-none-eabi-gcc
+CC   := arm-none-eabi-gcc
+PROG := bossac 
 MACH := cortex-m3 # SAM3X8E (Arduino Due) has ARM Cortex M3
 
 # Important Directories
@@ -34,3 +35,13 @@ $(OBJS): $(SRCS) $(INCS)
 # Remove everything in the output folder
 clean:
 	rm -r $(OUT_DIR)/*
+
+# Program binary file into device
+# 	-e erase flash
+# 	-w write binary to flash
+# 	-v verify that the flash contents match binary
+# 	-b set to boot from flash
+# 	-i display diagnostic information identifying target device
+# 	-R reset CPU after writing to target
+prog:
+	$(PROG) -e -w -v -b -i -R $(BIN_FILE)
