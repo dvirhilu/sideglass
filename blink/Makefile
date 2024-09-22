@@ -11,6 +11,8 @@ OUT_DIR := ./output
 
 # GCC Options
 CFLAGS := -mcpu=$(MACH) -O0 -Wall -I$(INC_DIR)
+# Also create .map file to view .elf's information TODO: Modify flag if using stdlib
+LFLAGS = -nostdlib -T $(LINKER) -Wl,-Map=$(OUT_DIR)/blink.map
 
 # List of all .c files in src/
 SRCS := $(wildcard $(SRC_DIR)/*.c)
@@ -42,9 +44,9 @@ $(FILENAME): $(SRCS) $(INCS)
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c -o $(OUT_DIR)/$@.o $(SRC_DIR)/$@.c 
 
-# Link object (.o) files. TODO: Modify flag if using stdlib
+# Link object (.o) files
 link: $(OBJS) $(LINKER)
-	$(CC) -nostdlib -T $(LINKER) $(OBJS) -o $(OUTFILE)
+	$(CC) $(LFLAGS) $(OBJS) -o $(OUTFILE)
 
 # Remove everything in the output folder
 clean:
