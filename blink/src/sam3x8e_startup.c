@@ -62,6 +62,17 @@
 
 /*
 * ----------------------------------------------------------------------------------------------
+* Linker symbols defined in the .ld script. 
+* Used to calculate the sizes of various sections of the output ELF file 
+* ----------------------------------------------------------------------------------------------
+*/
+extern uint32_t _etext; // end of .text section
+extern uint32_t _sdata; // start of .data section
+extern uint32_t _edata; // end of .data section
+
+
+/*
+* ----------------------------------------------------------------------------------------------
 * Handler Function Defs
 * ----------------------------------------------------------------------------------------------
 */
@@ -113,8 +124,14 @@ void DefaultHandler(void) {
 
 // First handler that gets called upon device reset
 void ResetHandler() {
-    // copy .data section to SRAM
-
+    // copy .data section from FLASH to SRAM
+    uint32_t data_size = (uint32_t)&_edata - (uint32_t)&_sdata; // size of .data section in bytes
+    uint32_t *p_dst = (uint32_t *)&_sdata; // pointer to destination = SRAM
+    uint32_t *p_src = (uint32_t *)&_etext; // pointer to source = FLASH (end of .text section)
+    
+    while (p_dst < &_edata) {
+        *p_dst++ = *p_src++;
+    }
     //initializae the .bss section to zero in SRAM
 
     // call init function of std library

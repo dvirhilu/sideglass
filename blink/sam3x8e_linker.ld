@@ -14,6 +14,7 @@ SECTIONS
         KEEP(*(.vector_table)) /* Should match name with startup.c */
         *(.text) /* Code segment of all input files */
         *(.rodata) /* Initialized static constants of all input files */
+        . = ALIGN(4); /* Align location counter to the next word boundary */
         _etext = .; /* _end_of_text. Store the updated location counter value with '.' */
     }> FLASH /* This section never gets relocated. VMA = LMA */
 
@@ -21,6 +22,7 @@ SECTIONS
     {
         _sdata = .; /* _start_of_data */
         KEEP(*(.data)) /* Static variables of all input files */
+        . = ALIGN(4); /* Align location counter to the next word boundary */
         _edata = .; /* _end_of_data */
     }> RAM AT > FLASH
 
@@ -28,6 +30,7 @@ SECTIONS
     {
         _sbss = .; /* _start_of_bss */
         KEEP(*(.bss)) /* Uninitialized static data of all input files */
+        . = ALIGN(4); /* Align location counter to the next word boundary */
         _ebss = .; /* _end_of_bss */
     }> RAM
 }
