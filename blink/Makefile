@@ -28,7 +28,9 @@ LINKER := sam3x8e_linker.ld
 OUTFILE := $(OUT_DIR)/blink.elf
 
 # File names without directory or file extensions
+# Remove the .c endings
 FILENAME := $(patsubst %.c,%,$(SRCS))
+# Remove the directory part
 FILENAME := $(patsubst $(SRC_DIR)/%,%,$(FILENAME))
 
 # "all" target to compile all files
