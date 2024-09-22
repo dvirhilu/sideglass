@@ -12,25 +12,37 @@ OUT_DIR := ./output
 # GCC Options
 CFLAGS := -mcpu=$(MACH) -O0 -Wall -I$(INC_DIR)
 
-# list of all .c files in src/
+# List of all .c files in src/
 SRCS := $(wildcard $(SRC_DIR)/*.c)
-# list of all .h files in inc/
+# List of all .h files in inc/
 INCS := $(wildcard $(INC_DIR)/*.h)
-# list of all .o to be made from .c files
-# substitute the ./src to ./output directory
+# List of all .o to be made from .c files
+# Substitute the ./src to ./output directory
 OBJS := $(subst $(SRC_DIR),$(OUT_DIR),$(SRCS))
-# replace .c to .o
+# Replace .c to .o
 OBJS := $(patsubst %.c,%.o,$(OBJS))
 
-# "all" target to compile all object files
-all: $(OBJS)
+# Linker script
+LINKER := sam3x8e_linker.ld
+# Output file name
+OUTFILE := $(OUT_DIR)/blink.elf
+
+# File names without directory or file extensions
+FILENAME := $(patsubst %.c,%,$(SRCS))
+FILENAME := $(patsubst $(SRC_DIR)/%,%,$(FILENAME))
+
+# "all" target to compile all files
+all: $(FILENAME) link
 
 # Create the output folder and
-# create .o files from all .c files in src
-$(OBJS): $(SRCS) $(INCS)
-	@echo "$(SRCS) $(OBJS)"
+# Create object files (.o) for each source file (.c)
+$(FILENAME): $(SRCS) $(INCS)
 	@mkdir -p $(@D)
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $(OUT_DIR)/$@.o $(SRC_DIR)/$@.c 
+
+# Link object (.o) files. TODO: Modify flag if using stdlib
+link: $(OBJS) $(LINKER)
+	$(CC) -nostdlib -T $(LINKER) $(OBJS) -o $(OUTFILE)
 
 # Remove everything in the output folder
 clean:

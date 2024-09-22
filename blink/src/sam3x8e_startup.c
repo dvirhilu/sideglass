@@ -119,5 +119,5 @@ void ResetHandler() {
 
     // call init function of std library
 
-    /// call main()
+    // call main()
 }
