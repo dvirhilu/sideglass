@@ -69,7 +69,10 @@
 extern uint32_t _etext; // end of .text section
 extern uint32_t _sdata; // start of .data section
 extern uint32_t _edata; // end of .data section
+extern uint32_t _sbss; // start of .bss section
+extern uint32_t _ebss; // end of .bss section
 
+int main(void); // declaration of main
 
 /*
 * ----------------------------------------------------------------------------------------------
@@ -125,16 +128,22 @@ void DefaultHandler(void) {
 // First handler that gets called upon device reset
 void ResetHandler() {
     // copy .data section from FLASH to SRAM
-    uint32_t data_size = (uint32_t)&_edata - (uint32_t)&_sdata; // size of .data section in bytes
     uint32_t *p_dst = (uint32_t *)&_sdata; // pointer to destination = SRAM
     uint32_t *p_src = (uint32_t *)&_etext; // pointer to source = FLASH (end of .text section)
     
     while (p_dst < &_edata) {
         *p_dst++ = *p_src++;
     }
+
     //initializae the .bss section to zero in SRAM
+    p_dst = (uint32_t *)&_sbss;
+
+    while (p_dst < &_ebss) {
+        *p_dst++ = 0;
+    }
 
     // call init function of std library
 
     // call main()
+    main();
 }

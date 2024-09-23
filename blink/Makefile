@@ -1,6 +1,7 @@
 # Makefile for compiling
 
 CC   := arm-none-eabi-gcc
+OBJCOPY := arm-none-eabi-objcopy
 PROG := bossac 
 MACH := cortex-m3 # SAM3X8E (Arduino Due) has ARM Cortex M3
 
@@ -31,22 +32,25 @@ OUTFILE := $(OUT_DIR)/blink.elf
 
 # File names without directory or file extensions
 # Remove the .c endings
-FILENAME := $(patsubst %.c,%,$(SRCS))
+FNAMES := $(patsubst %.c,%,$(SRCS))
 # Remove the directory part
-FILENAME := $(patsubst $(SRC_DIR)/%,%,$(FILENAME))
+FNAMES := $(patsubst $(SRC_DIR)/%,%,$(FNAMES))
 
 # "all" target to compile all files
-all: $(FILENAME) link
+all: $(FNAMES) link bin
 
 # Create the output folder and
 # Create object files (.o) for each source file (.c)
-$(FILENAME): $(SRCS) $(INCS)
+$(FNAMES): $(SRCS) $(INCS)
 	@mkdir -p $(@D)
 	$(CC) $(CFLAGS) -c -o $(OUT_DIR)/$@.o $(SRC_DIR)/$@.c 
 
 # Link object (.o) files
 link: $(OBJS) $(LINKER)
 	$(CC) $(LFLAGS) $(OBJS) -o $(OUTFILE)
+
+bin: $(OUTFILE)
+	$(OBJCOPY) -O binary $(OUTFILE) $(OUT_DIR)/blink.bin
 
 # Remove everything in the output folder
 clean:
@@ -60,4 +64,4 @@ clean:
 # 	-i display diagnostic information identifying target device
 # 	-R reset CPU after writing to target
 prog:
-	$(PROG) -e -w -v -b -i -R $(BIN_FILE)
+	$(PROG) -U true -p $(PORT) -e -w -v -b -i -R $(OUTFILE)
